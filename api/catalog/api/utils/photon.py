@@ -103,6 +103,9 @@ def get(
     except requests.RequestException as exc:
         sentry_sdk.capture_exception(exc)
         raise UpstreamThumbnailException(f"Failed to render thumbnail: {exc}")
+    except requests.ConnectionError as exc:
+        sentry_sdk.capture_exception(exc)
+        raise UpstreamThumbnailException(f"Failed to connect to server: {exc}")
     except Exception as exc:
         sentry_sdk.capture_exception(exc)
         raise UpstreamThumbnailException(
